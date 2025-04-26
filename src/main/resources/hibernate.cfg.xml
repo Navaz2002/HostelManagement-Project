@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- JDBC Config -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hostelmanagement</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">itsnavaz@441</property>
+
+        <!-- Hibernate Config -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.show_sql">true</property>
+        
+      
+
+        <!-- Mapping -->
+        <mapping class="com.hostel.management.model.Student"/>
+        <mapping class="com.hostel.management.model.Room"/>
+        <mapping class="com.hostel.management.model.Payment"/>
+
+
+    </session-factory>
+</hibernate-configuration>
