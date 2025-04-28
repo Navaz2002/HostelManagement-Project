@@ -7,7 +7,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-//import java.lang.module.Configuration;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.annotations.SourceType;
@@ -17,10 +17,10 @@ import org.hibernate.tool.schema.spi.SourceDescriptor;
 import com.hostel.management.model.Payment;
 import com.hostel.management.model.Room;
 import com.hostel.management.model.Student;
+import com.mysql.cj.jdbc.AbandonedConnectionCleanupThread;
 
 import jakarta.persistence.Query;
 
-//import com.mysql.cj.Query;
 
 public class Main {
      public static void main(String[] args) {
@@ -33,21 +33,20 @@ public class Main {
         addRooms(factory);
         System.out.println();
         System.out.println("Welcome to Hostel Managment :");
-        System.out.println("Please select the options as per your requirement!");
-        System.out.println();
 
         boolean run = true;
         Integer operation = -1;
 
         while (run) {
-            System.out.println("1.Enter 1 for student operations :");
-            System.out.println("2.Enter 2 for room operations :");
-            System.out.println("3.Enter 3 for payment operations :");
-            System.out.println("0.To exit");
+            System.out.println("Please select the options as per your requirement!");
+            System.out.println();
+            System.out.println("Enter 1 for student operations :");
+            System.out.println("Enter 2 for room operations :");
+            System.out.println("Enter 3 for payment operations :");
+            System.out.println("Enter 0 to exit");
 
             try {
                 operation = scanner.nextInt();
-                System.out.println(operation);
                 scanner.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("Input mismatch.");
@@ -76,39 +75,96 @@ public class Main {
         }
 
         factory.close();
+        scanner.close();
+    
+        AbandonedConnectionCleanupThread.checkedShutdown();
 
         thankYou("Exiting");
+        
     }
 
     private static void thankYou(String message) {
         System.out.print(message);
         for(int i=0; i<5; i++){
             System.out.print(".");
+            try {
+                Thread.sleep(350);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
           
         }
     }
 
     private static void paymentOperations(Scanner scanner, SessionFactory factory) {
-        
+        System.out.println("Welcome to payment operations.");
+        System.out.println();
+
+        boolean run = true;
+        int option = 0;
+
+        while (run) {
+            System.out.println("Select the option as per requirement");
+            System.out.println();
+            System.out.println("Enter 1 to update fee status.");
+            System.out.println("Enter 2 to fetch due list.");
+            System.out.println("Enter 3 to fetch paid list");
+            System.out.println("Enter 0 to go back to main oprataions interface.");
+
+            try {
+                option = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Input mismatch.Required integer but provided other.");
+                scanner.nextLine();
+                return;
+            }
+
+            switch (option) {
+                case 1:
+                    updateFeeStatus(scanner, factory);
+                    break;
+                case 2:
+                    fetchDueList(factory);
+                    break;
+                case 3:
+                    fetchPaidList(factory);
+                    break;
+                case 0:
+                    run = false;
+                    break;
+                default:
+                    System.out.println("Enter valid option.");
+                    break;
+            }
+        }
     }
 
     private static void roomOperations(Scanner scanner, SessionFactory factory) {
-       // System.out.println("Welcome to room operations ");
-        System.out.println();
+    
         boolean run = true;
+        int option = 0;
 
         while (run) {
-            System.out.println("Please enter the option you require.");
+            System.out.println("Please enter the option as per the requirement.");
             System.out.println();
-            System.out.println("1.Check available rooms with beds");
-            System.out.println("2.Get details of a room number");
-            System.out.println("3.Add a new Room.");
-            System.out.println("4.Update room features.");
-            System.out.println("5.Get students of a room");
-            System.out.println("6 to delete a room.");
-            System.out.println("0.Exit.");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            System.out.println("Enter 1 to check available rooms with beds");
+            System.out.println("Enter 2 to get details of a room number");
+            System.out.println("Enter 3 to add a new Room.");
+            System.out.println("Enter 4 to update room features.");
+            System.out.println("Enter 5 to get students of a room");
+            System.out.println("Enter 6 to delete a room.");
+            System.out.println("Enter 0 to go back to main operations interface.");
+          
+            try {
+                option = scanner.nextInt();
+                scanner.nextLine();
+            } catch (Exception e) {
+                System.out.println("Input mismatch.Requires integer but provided other.");
+                scanner.nextLine();
+                return;
+            }
 
             switch (option) {
                 case 1:
@@ -216,43 +272,47 @@ public class Main {
         boolean run = true;
 
         while (run) {
-            System.out.println("Select the option");
+            System.out.println("Enter the option as per the requirement.");
             System.out.println();
-            System.out.println("1.Update room cpacaity");
-            System.out.println("2.update fee.");
-            System.out.println("3.Update both capacity and fee.");
-            System.out.println("0.Go back to main.");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            System.out.println("Enter 1 to update room cpacaity");
+            System.out.println("Enter 2 to update fee.");
+            System.out.println("Enter 0 to go back.");
+            int option;
+
+            try {
+                option = scanner.nextInt();
+                scanner.nextLine();
+            } catch (Exception e) {
+                System.out.println("Input mismatch.Required integer but provided other.");
+                scanner.nextLine();
+                return;
+            }
+            
             switch (option) {
                 case 1:
                     updateCapacity(scanner, factory);
                     break;
                 case 2:
-                    updateFee(scanner, factory);
-                    break;
-                case 3:
-                    updateCapacity(scanner, factory);
-                    updateFee(scanner, factory);
+                    updateRoomFee(scanner, factory);
                     break;
                 case 0:
                     run = false;
                 default:
-                    System.out.println("Please eneter valid option.");
+                    System.out.println("Please enter valid option.");
                     break;
             }
         }
     }
 
-    private static void updateFee(Scanner scanner, SessionFactory factory) {
+    private static void updateRoomFee(Scanner scanner, SessionFactory factory) {
         boolean run = true;
         int option = 0;
         while (run) {
             System.out.println("Select the option .");
             System.out.println();
-            System.out.println("1 to increase fee.");
-            System.out.println("2 to decrease fee.");
-            System.out.println("0 to go back.");
+            System.out.println("Enter 1 to increase fee.");
+            System.out.println("Enter 2 to decrease fee.");
+            System.out.println("Enter 0 to go back.");
 
             try {
                 option = scanner.nextInt();
@@ -357,7 +417,7 @@ public class Main {
         session.getTransaction().commit();
         session.close();
 
-        System.out.println("Fee updated successfully.");
+        System.out.println("Fee has been increased successfully.");
         System.out.println();
 
         
@@ -365,21 +425,32 @@ public class Main {
 
     private static void updateCapacity(Scanner scanner, SessionFactory factory) {
         boolean run = true;
+        int option = 0;
          while (run) {
-            System.out.println("Seelect the option as per requirement.");
-            System.out.println("1.Increase capacity");
-            System.out.println("2.decrease capacity.");
-            System.out.println("3.Increase capacity for rooms ");
-            System.out.println("Decrease capacity for rooms");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            System.out.println("Enter the option as per requirement.");
+            System.out.println();
+            System.out.println("Enter 1 to increase capacity");
+            System.out.println("Enetr 2 to decrease capacity.");
+            System.out.println("Enter 3 to increase capacity for rooms. ");
+            System.out.println("Enter 4 to decrease capacity for rooms.");
+            System.out.println("enter 5 to update available beds of a room.");
+            System.out.println("Enter 0 to go back.");
+
+            try {
+                option = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Input mismatch.Required integer but provided other.");
+                scanner.nextLine();
+                return;
+            }
 
             switch (option) {
                 case 1:
                     increaseCapacity(scanner, factory);
                     break;
                 case 2:
-                    decreaseCapacity(scanner, factory);
+                    decreasecapacity(scanner, factory);
                     break;
                 case 3:
                     increaseCapacityOfRooms(scanner, factory);
@@ -455,13 +526,81 @@ public class Main {
         
     }
 
+    /*
+     * This method is used to decrease the capacity of provided  n rooms.
+     * Use it when the new capacity is same for n rooms
+     */
     private static void decreaseCapacityOfRooms(Scanner scanner, SessionFactory factory) {
         
+        int noOfRooms;
+        try {
+            System.out.println("Please provide the number of rooms whose capacity you want to increase");
+            noOfRooms = scanner.nextInt();
+            scanner.nextLine();
+        } catch (Exception e) {
+            System.out.println("Invalid input.Required integer but provide other.");
+            scanner.nextLine();
+            return;
+        }
+
+        System.out.println("Please provide the room numbers whose new decreasing capacity is same");
+        List<Integer> roomNumbersList = new ArrayList<>();
+
+        for(int i=0; i<noOfRooms; i++){
+            try {
+                roomNumbersList.add(scanner.nextInt());
+                if( ! doesRoomExist(roomNumbersList.get(i), factory)){
+                    System.out.println("Provided room does not exist in the database.");
+                    //scanner.nextLine()
+                    return;
+                }
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input.Required number but provided other");
+                scanner.nextLine();
+                return;
+            }
+        }
+
+        int decreasedCapacity ;
+        try {
+            System.out.println("Please eneter the new capacity for all the mentioned rooms");
+            decreasedCapacity = scanner.nextInt();
+            scanner.nextLine();
+            if (decreasedCapacity < 0) {
+                System.out.println("Capacity cannot be negativie");
+                return;
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid input.Required number but provided other");
+            scanner.nextLine();
+            return;
+        }
+
+        Session session = factory.openSession();
+        session.beginTransaction();
+
+        for (int i=0; i<noOfRooms; i++) {
+
+            Room room = session.get(Room.class, roomNumbersList.get(i));
+            int olderCapacity = room.getCapacity();
+            int oldBeds = room.getBedsAvailable();
+            room.setCapacity(decreasedCapacity);
+
+            room.setBedsAvailable(0);
+        }
+
+        session.getTransaction().commit();
+        session.close();
+
+        System.out.println("Capacity decreased for the given rooms successfully.");
+        System.out.println("Also the avialableBeds for these rooms has been set to 0.You can update it as per the requirement later.");
+
     }
 
     /*
-     * This method is used to increase the cpacity of provided room numbers.
-     * It works when the new increasing capacity is same for n room numbers.
+     * This method is used to increase the cpacity of provided n rooms.
+     * Use it  when the new increasing capacity is same for n rooms.
      */
 
     private static void increaseCapacityOfRooms(Scanner scanner, SessionFactory factory) {
@@ -478,12 +617,12 @@ public class Main {
         }
 
         System.out.println("Please provide the room numbers whose new increasing capacity is same");
-        List<Integer> roomNumbers = new ArrayList<>();
+        List<Integer> roomNumbersList = new ArrayList<>();
 
         for(int i=0; i<noOfRooms; i++){
             try {
-                roomNumbers.add(scanner.nextInt());
-                if( ! doesRoomExist(roomNumbers.get(i), factory)){
+                roomNumbersList.add(scanner.nextInt());
+                if( ! doesRoomExist(roomNumbersList.get(i), factory)){
                     System.out.println("Provided room does not exist in the database.");
                     //scanner.nextLine();
                     return;
@@ -501,6 +640,10 @@ public class Main {
             System.out.println("Please eneter the new capacity for all the mentioned rooms");
             increasedCapacity = scanner.nextInt();
             scanner.nextLine();
+            if (increasedCapacity < 0) {
+                System.out.println("Capacity cannot be negativie");
+                return;
+            }
         } catch (Exception e) {
             System.out.println("Invalid input.Required number but provided other");
             scanner.nextLine();
@@ -512,7 +655,7 @@ public class Main {
 
         for (int i=0; i<noOfRooms; i++) {
 
-            Room room = session.get(Room.class, roomNumbers.get(i));
+            Room room = session.get(Room.class, roomNumbersList.get(i));
             int olderCapacity = room.getCapacity();
             int oldBeds = room.getBedsAvailable();
             room.setCapacity(increasedCapacity);
@@ -534,7 +677,10 @@ public class Main {
         
     }
 
-    private static void decreaseCapacity(Scanner scanner, SessionFactory factory) {
+    /*
+     * this method is used to decrease the capacity of provided room.
+     */
+    private static void decreasecapacity(Scanner scanner, SessionFactory factory) {
 
         int roomNumber;
         try {
@@ -554,8 +700,18 @@ public class Main {
         try {
             System.out.println("Enter new capacity for room number "+roomNumber);
             newCapacity = scanner.nextInt();
+            if (newCapacity < 0) {
+                System.out.println("Capacity cannot be negative.");
+                return;
+            }
         } catch (Exception e) {
             System.out.println("Invalid input.Required integer but provide other.");
+            scanner.nextLine();
+            return;
+        }
+
+        if(! validDecrease(newCapacity, roomNumber, factory)){
+            System.out.println("New capacity must be lesser than old one.");
             return;
         }
 
@@ -580,10 +736,32 @@ public class Main {
         session.getTransaction().commit();
         session.close();
 
-        System.out.println("capacity for room number "+roomNumber+ " updated successfully.");
+        System.out.println("capacity for room number "+roomNumber+ " decreased successfully.");
 
     }
 
+    /*
+     * this method checks whether provide new decreasing capacity is valid or nor.
+     * Its valid if new capacity is lesse than old capacity, invalid if not.
+     * Returns true if valid, false if not.
+     */
+    private static boolean validDecrease(int newCapacity, int roomNumber, SessionFactory factory) {
+        
+        Session session = factory.openSession();
+        session.beginTransaction();
+
+        Room room = session.get(Room.class, roomNumber);
+        int oldCapacity = room.getCapacity();
+
+        session.getTransaction().commit();
+        session.close();
+
+        return newCapacity < oldCapacity ;
+    }
+
+    /*
+     * this method is used to increase the capacity of provided room.
+     */
     private static void increaseCapacity(Scanner scanner, SessionFactory factory) {
         
         int roomNumber;
@@ -604,8 +782,18 @@ public class Main {
         try {
             System.out.println("Enter new capacity for room number "+roomNumber);
             newCapacity = scanner.nextInt();
+            if (newCapacity < 0) {
+                System.out.println("Capacity cannot be negativie");
+                return;
+            }
         } catch (Exception e) {
             System.out.println("Invalid input.Required integer but provide other.");
+            scanner.nextLine();
+            return;
+        }
+
+        if(! validIncrease(newCapacity, roomNumber, factory)){
+            System.out.println("New capacity must be greater than old one.");
             return;
         }
 
@@ -613,15 +801,11 @@ public class Main {
         session.beginTransaction();
 
         Room room = session.get(Room.class, roomNumber);
-        int oldCpacity = room.getCapacity();
+        int oldCapacity = room.getCapacity();
         room.setCapacity(newCapacity);
 
-        int updatedBeds = room.getBedsAvailable();
-        if(updatedBeds == 0){
-            updatedBeds = (newCapacity - oldCpacity);
-        }else{
-            updatedBeds = newCapacity - updatedBeds;
-        }
+        int oldBeds = room.getBedsAvailable();
+        int updatedBeds  = newCapacity - (oldCapacity - oldBeds);
        
         room.setBedsAvailable(updatedBeds);
 
@@ -630,6 +814,22 @@ public class Main {
 
         System.out.println("capacity increased for room number "+roomNumber+ " successfully.");
 
+    }
+
+    /*
+     * this method is used to validate provided new increasing capacity is valid or nor.
+     * Its valid if new capacity is greater than old capacity.
+     * Returns true if valid, false if not
+     */
+    private static boolean validIncrease(int newCapacity, int roomNumber, SessionFactory factory) {
+
+        Session session = factory.openSession();
+        session.beginTransaction();
+
+        Room room = session.get(Room.class, roomNumber);
+        int oldCapacity = room.getCapacity();
+
+        return newCapacity > oldCapacity;
     }
 
     /*
@@ -713,11 +913,6 @@ public class Main {
 
         Room room = session.get(Room.class, roomNumber);
         System.out.println(room);
-        System.out.println("");
-        // List<Student> studentList = room.getStudentList();
-        // for (Student student : studentList) {
-        //     System.out.println(student);
-        // }
 
         session.getTransaction().commit();
         session.close();
@@ -726,16 +921,14 @@ public class Main {
     private static void studentOperations(Scanner scanner, SessionFactory factory) {
         boolean run = true;
         while (run) {
-            System.out.println("Please select the options you require");
+            System.out.println("Please Enter the option as per the requirement.");
             System.out.println();
-            System.out.println("1.Add a new student.");
-            System.out.println("2.Get details of a student.");
-            System.out.println("3.Get details of all students.");
-           // System.out.println("4.Get a list of student who did not pay fee.");
-           // System.out.println("5.Get a list of students who paid fee.");
-            System.out.println("6.Update details of a student");
-            System.out.println("7.Delete a student");
-            System.out.println("0.To go back to main operations interface");
+            System.out.println("Enter 1 add a new student.");
+            System.out.println("Enter 2 get details of a student.");
+            System.out.println("Enter 3 get details of all students.");
+            System.out.println("Enter 4 update details of a student");
+            System.out.println("Enter 5 delete a student");
+            System.out.println("Enter 0 to go back to main operations interface");
             int option = -1;
             try {
                 option = scanner.nextInt();
@@ -757,14 +950,8 @@ public class Main {
                     getDetailsOfStudents(factory);
                     break;
                 case 4:
-                    getDueList(factory);
-                    break;
-                case 5:
-                    getPaidList(factory);
-                    break;
-                case 6:
                     updateStudent(scanner, factory);
-                case 7:
+                case 5:
                     deleteStudent(scanner, factory);
                     break;
                 case 0:
@@ -776,38 +963,7 @@ public class Main {
             }
     
         }
-        // System.out.println("Please select the options you require");
-        // System.out.println();
-        // System.out.println("1.Add a new student.");
-        // System.out.println("2.Get details of a student.");
-        // System.out.println("3.Get details of all students.");
-        // System.out.println("4.Get a list of student who did not pay fee.");
-        // System.out.println("5.Get a list of students who paid fee.");
-        // System.out.println("6.Update details of a student");
-        // int option = scanner.nextInt();
-        // scanner.nextLine();
-
-        // switch (option) {
-        //     case 1:
-        //         addStudent(scanner, factory);
-        //         break;
-        //     case 2:
-        //         getDetailsOfStudent(scanner, factory);
-        //         break;
-        //     case 3:
-        //         getDetailsOfStudents(factory);
-        //         break;
-        //     case 4:
-        //         getDueList(factory);
-        //         break;
-        //     case 5:
-        //         getPaidList(factory);
-        //         break;
-        //     case 6:
-        //         updateStudent(scanner, factory);
-        //     default:
-        //         break;
-        // }
+     
     }
 
     private static void deleteStudent(Scanner scanner, SessionFactory factory) {
@@ -868,14 +1024,22 @@ public class Main {
             return;
         }
 
-        System.out.println("Please enter the option you require :");
         boolean run = true;
         while (run) {
-            System.out.println("1.To update contact number.");
-            System.out.println("2.To update room number.");
-            System.out.println("3.To update fee status.");
-            System.out.println("0.To go back");
-            int option = scanner.nextInt();
+            System.out.println("Please enter the option as per the requirement :");
+            System.out.println();
+            System.out.println("Enter 1 to update contact number.");
+            System.out.println("Enter 2 to update room number.");
+            System.out.println("Enter 0 to go back.");
+            int option;
+            try {
+                option = scanner.nextInt();
+                scanner.nextLine();
+            } catch (InputMismatchException e) {
+                System.out.println("Input mismatch.Required integer but provided other.");
+                scanner.nextLine();
+                return;
+            }
             scanner.nextLine();
             switch (option) {
                 case 1:
@@ -883,9 +1047,6 @@ public class Main {
                     break;
                 case 2:
                     updateRoomNumber(scanner, factory, studentId);
-                    break;
-                case 3:
-                    updateFeeStatus(scanner, factory,studentId);
                     break;
                 case 0:
                     run = false;
@@ -906,15 +1067,25 @@ public class Main {
      * It updates as paid or due depending on the input provided by the administarator.
      * If provided as paid ,it updates status as paid,if providedas due it updates as due.
      */
-    private static void updateFeeStatus(Scanner scanner, SessionFactory factory, int studentId) {
-
-        String feeStatus;
+    private static void updateFeeStatus(Scanner scanner, SessionFactory factory) {
         
-        System.out.println("Enter the fee status (paid/due).Enter any one of two ,either paid or due.");
+        int studentId;
+        String feeStatus;
+
+        try {
+            System.out.println("Enter the student id to update fee status.");
+            studentId = scanner.nextInt();
+            scanner.nextLine();
+        } catch (InputMismatchException e) {
+            System.out.println("Input mismatch.Required integer but provided other.");
+            scanner.nextLine();
+            return;
+        }
+        
+        System.out.println("update the fee status.Enter paid to update as paid or due to update as due.");
         feeStatus = scanner.nextLine();
         if(! isNameValid(feeStatus)){
             System.out.println("Invalid input.Do not enetr any specialcharacters.");
-            System.out.println();
             return;
         }
 
@@ -927,7 +1098,7 @@ public class Main {
         session.getTransaction().commit();
         session.close();
 
-        System.out.println("Fee status updated successfully.");
+        System.out.println("Fee status  for student id "+ studentId +" updated successfully.");
         System.out.println();
 
 
@@ -1073,15 +1244,60 @@ public class Main {
 
     }
 
-    private static void getPaidList(SessionFactory factory) {
-        String hql = "SELECT "
+    /*
+     * This method prints student's id, name whose feeStatus field value
+     * is paid.
+     */
+    private static void fetchPaidList(SessionFactory factory) {
+
         Session session = factory.openSession();
+        session.beginTransaction();
+
+        String hql = "SELECT studentId, name FROM Student WHERE feeStatus = :P";
+        Query q = session.createQuery(hql);
+        q.setParameter("P", "paid");
+        List<Object[]> results = q.getResultList();
+        if (results.isEmpty()) {
+            System.out.println("There are no students in the database whose feestatus is paid");
+        }else{
+            for (Object[] object : results) {
+                int studentId = (Integer) object[0];
+                String name = (String) object[1];
+                System.out.println("Student id : "+studentId+", name : "+name);
+            }
+        }
+
+        session.getTransaction().commit();
+        session.close();
 
     }
 
-    private static void getDueList(SessionFactory factory) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getDueList'");
+    /*
+     * This method prints student's id, name whose fessStatus field value is due
+     * 
+     */
+    private static void fetchDueList(SessionFactory factory) {
+        
+        Session session = factory.openSession();
+        session.beginTransaction();
+
+        String hql = "SELECT studentId, name FROM Student WHERE feeStatus = :D";
+        Query q = session.createQuery(hql);
+        q.setParameter("D", "due");
+        List<Object[]> results = q.getResultList();
+        if (results.isEmpty()) {
+            System.out.println("There are no students in the database whose feestatus is due."); 
+        } else {    
+            for (Object[] object : results) {
+                int studentId = (Integer)object[0];
+                String name = (String)object[1];
+                System.out.println("Student id : "+studentId+", name : "+name);
+            }
+        }
+
+        session.getTransaction().commit();
+        session.close();
+
     }
 
     /*
@@ -1164,10 +1380,10 @@ public class Main {
             return;
         }
         
-        System.out.println("Please enter student full name.Do not add any special characters other than alphabets.");
+        System.out.println("Please enter student full name.");
         String name = scanner.nextLine();
         if(! isNameValid(name)){
-            System.out.println("Invalid name.Do not add any special charcaters other than alphabets");
+            System.out.println("Invalid name.Do not enter any special charcaters other than alphabets");
             return;
         }
 
