@@ -26,18 +26,19 @@ As an administrator, you can:
 
 STUDENT APIs
 
-Method                 Endpoint	                                 Description
-   
-GET	                   /student                    	           Get all students
-GET	                   /student/{studentId}	                         Get a student by ID
-GET                    /student?feeStatus=Paid                 Get students whose fee status is Paid
-GET                    /student?feeStatus=Due                  Get students whose fee status is Due
-GET                    /student?collegeName=college            Get students belonging to a specific college
-GET                    /student?roomNumber=22                  Get students belonging to a specific room
-GET                    /student?joiningDate=2025-07-05         Get students who joined hostel on a specific date
-POST	                 /student	                               Add a new student
-PUT	                   /student/{studentId}	                         Update student details
-DELETE	               /student/{studentId}	                         Remove a student
+| Method | Endpoint                                 | Description                                       |
+|--------|------------------------------------------|---------------------------------------------------|
+| GET    | `/student`                               | Get all students                                  |
+| GET    | `/student/{studentId}`                   | Get a student by ID                               |
+| GET    | `/student?feeStatus=Paid`                | Get students whose fee status is Paid             |
+| GET    | `/student?feeStatus=Due`                 | Get students whose fee status is Due              |
+| GET    | `/student?collegeName=college`           | Get students belonging to a specific college      |
+| GET    | `/student?roomNumber=22`                 | Get students belonging to a specific room         |
+| GET    | `/student?joiningDate=2025-07-05`        | Get students who joined hostel on a specific date |
+| POST   | `/student`                               | Add a new student                                 |
+| PUT    | `/student/{studentId}`                   | Update student details                            |
+| DELETE | `/student/{studentId}`                   | Remove a student                                  |
+
 
 FOLLOWING IS A DETAILED DESCRIPTION ABOUT THE ABOVE MENTIONED METHODS ALONG WITH ENDPOINTS, DESCRIPTION
 
@@ -112,17 +113,17 @@ NOT SUPPORTED FUNCTIONALITIES
 
 # ROOM APIs
 
-Method                 Endpoint	                                                  Description
-
-POST                   /room                                                   add a new room
-GET	                   /room                    	                             Get all rooms
-GET                    /room/{roomNumber}                                      Get a specific room
-GET                    /room?roomsAvailable=true                               Get available rooms
-GET                    /room?roomsAvailable=false                              Get occupied rooms
-GET                    /room?roomsAvailable=true&capacity={number}             Get available rooms with specified capacity
-PUT                    /room/{roomNumber}                                      Update room fee
-PUT                    /room/{roomNumber}                                      Update room cpacity
-DELETE                 /room/{roomNumber}                                      Delete a room
+| Method | Endpoint                                                  | Description                                        |
+|--------|-----------------------------------------------------------|----------------------------------------------------|
+| POST   | `/room`                                                   | Add a new room                                     |
+| GET    | `/room`                                                   | Get all rooms                                      |
+| GET    | `/room/{roomNumber}`                                      | Get a specific room                                |
+| GET    | `/room?roomsAvailable=true`                               | Get available rooms                                |
+| GET    | `/room?roomsAvailable=false`                              | Get occupied rooms                                 |
+| GET    | `/room?roomsAvailable=true&capacity={number}`             | Get available rooms with specified capacity        |
+| PUT    | `/room/{roomNumber}`                                      | Update room fee                                    |
+| PUT    | `/room/{roomNumber}`                                      | Update room capacity                               |
+| DELETE | `/room/{roomNumber}`                                      | Delete a room                                      |
 
 
 
@@ -195,10 +196,11 @@ DELETE METHOD INCLUDES
 
 PAYMENT APIs
 
-   Method                 Endpoint	                                 Description
-   
-   GET	                   /payment                    	           Get all student's payment records
-   GET	                   /payment/{studentId}	                   Get a specific student payment records
+| Method | Endpoint               | Description                           |
+|--------|------------------------|---------------------------------------|
+| GET    | `/payment`             | Get all students' payment records     |
+| GET    | `/payment/{studentId}` | Get a specific student's payment records |
+
 
 
   ->This entity currently supports only GET method request.
