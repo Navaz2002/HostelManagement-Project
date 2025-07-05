@@ -63,28 +63,11 @@ public class Room {
     }
 
     public void addStudent(Student student){
+        
         if (this.studentList == null) {
             this.studentList = new ArrayList<>();
         }
         this.studentList.add(student);
-    }
-
-    public void removeBeds(SessionFactory factory, int roomNumber){
-        Session session = factory.openSession();
-        session.beginTransaction();
-
-        Room room = session.get(Room.class, roomNumber);
-        int avilableBeds = room.bedsAvailable;
-        if(avilableBeds == 0){
-            System.out.println("Please check once avialability of beds.Provided room number has 0 beds");
-            return;
-        }
-        avilableBeds = room.bedsAvailable - 1;
-        room.bedsAvailable = room.bedsAvailable - 1;
-
-        session.getTransaction().commit();
-        session.close();
-
     }
 
     @Override

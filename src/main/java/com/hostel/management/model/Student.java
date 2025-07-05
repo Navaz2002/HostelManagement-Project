@@ -1,13 +1,12 @@
 package com.hostel.management.model;
 
+import java.lang.ProcessBuilder.Redirect.Type;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -18,6 +17,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "student")
 public class Student {
+    
     @Id
     private int studentId;
     private String name;
@@ -29,14 +29,20 @@ public class Student {
     @OneToOne
     @JoinColumn(name = "roomNumber")
     private Room room;
-
-    @OneToMany(mappedBy = "student")
-    List<Payment> paymentList = new ArrayList<>();
-
     
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<Payment> paymentList;
 
     public Room getRoom() {
         return room;
+    }
+
+    public List<Payment> getPaymentList() {
+        return paymentList;
+    }
+
+    public void setPaymentList(List<Payment> paymentList) {
+        this.paymentList = paymentList;
     }
 
     public void setRoom(Room room) {
@@ -84,14 +90,6 @@ public class Student {
         this.joiningDate = joiningDate;
     }
 
-    public List<Payment> getPaymentList() {
-        return paymentList;
-    }
-
-    public void setPaymentList(List<Payment> paymentList) {
-        this.paymentList = paymentList;
-    }
-
     @Override
     public String toString() {
         return "Student Id : "+this.studentId+ ", name : "+this.name+", contactNumber : "+this.contactNumber+", collegeName : " +this.collegeName+ ", joingDate : "+this.joiningDate+", roomNumber : "+this.getRoomNumber();
@@ -107,30 +105,26 @@ public class Student {
         return feeStatus;
     }
 
-    public void setFeeStatus(String feeStatus, SessionFactory factory) {
+    public void setFeeStatus(String feeStatus) {
         this.feeStatus = feeStatus;
-        // if (feeStatus == "paid") {
-        //     Session session = factory.openSession();
-        //     session.beginTransaction();
-
-        //     Payment pay = new Payment();
-        //     pay.setPaymentDateTime(LocalDateTime.now());
-        //     pay.setStudent(this);
-        //     this.addPayment(pay);
-
-        //     session.persist(pay);
-
-        //     session.getTransaction().commit();
-        //     session.close();
-        // }
     }
 
-    public void addPayment(Payment pay) {
+    /*
+     * this setter method add the provided payment object 
+     * to this student paymentList
+     */
+    public void addPayment(Payment payment) {
+
         if (this.paymentList == null) {
+
             this.paymentList = new ArrayList<>();
+
         }
-        this.paymentList.add(pay);
+
+        this.paymentList.add(payment);
+        
     }
+
 
     
 

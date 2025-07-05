@@ -1,8 +1,9 @@
 package com.hostel.management.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import javax.annotation.processing.Generated;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,16 +12,35 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+
 @Entity
 public class Payment {
+
     @Id 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int paymentId;
-    private LocalDateTime paymentDateTime;
+    private LocalDateTime payment_Date;
+    private LocalDate paid_till;
     
     @ManyToOne
-    @JoinColumn(name = "studentId")
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
+    /*
+     * This constructor recieves the student object , months.
+     * Student object is saved into this payment object
+     * months defines how many months fee student paid.
+     */
+    public Payment(Student student, int months) {
+
+        this.paid_till = student.getJoiningDate().plusMonths(months);
+        this.payment_Date = LocalDateTime.now();
+        this.student = student; 
+
+    }
+
+    public Payment(){
+        
+    }
 
     public int getPaymentId() {
         return paymentId;
@@ -30,22 +50,20 @@ public class Payment {
         this.paymentId = paymentId;
     }
 
-    public LocalDateTime getPaymentDateTime() {
-        return paymentDateTime;
+    public LocalDateTime getPayment_Date() {
+        return payment_Date;
     }
 
-    public void setPaymentDateTime(LocalDateTime paymentDateTime) {
-        this.paymentDateTime = paymentDateTime;
+    public void setPayment_Date(LocalDateTime payment_Date) {
+        this.payment_Date = payment_Date;
     }
 
-    @Override
-    public String toString() {
-        if (this != null) {
-            int studentId = this.getStudent().getStudentId();
-            return "payment id : "+this.paymentId+ ", payment date :"+this.paymentDateTime+", student id : "+studentId;
-        }
+    public LocalDate getPaid_till() {
+        return paid_till;
+    }
 
-        return "Payment is null.";
+    public void setPaid_till(LocalDate paid_till) {
+        this.paid_till = paid_till;
     }
 
     public Student getStudent() {
@@ -56,5 +74,10 @@ public class Payment {
         this.student = student;
     }
 
+   
+
+   
+
+    
     
 }
