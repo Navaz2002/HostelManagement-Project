@@ -5,27 +5,27 @@ Hostel Management System – Backend (Local APIs)
 A Java-based backend system to manage hostel operations. It provides local RESTful APIs to handle student registrations, room assignments, and payment tracking.
 
 # Technologies used
-->Java
-->Hibernate
-->Mysql
+->Java<br>
+->Hibernate<br>
+->Mysql<br>
 
 
 # Role – Administrator
-As an administrator, you can:
-
--> Add, view, update, or delete Students
--> Add, view, or update Rooms and manage capacity
--> Record and fetch Payments of students
-
+As an administrator, you can:<br>
+<br>
+-> Add, view, update, or delete Students<br>
+-> Add, view, or update Rooms and manage capacity<br>
+-> Record and fetch Payments of students<br>
+<br>
 
 # Entities / Resources
-
-->Student
-->Room
-->Payment
-
+<br>
+->Student<br>
+->Room<br>
+->Payment<br>
+<br>
 STUDENT APIs
-
+<br>
 | Method | Endpoint                                 | Description                                       |
 |--------|------------------------------------------|---------------------------------------------------|
 | GET    | `/student`                               | Get all students                                  |
@@ -40,75 +40,75 @@ STUDENT APIs
 | DELETE | `/student/{studentId}`                   | Remove a student                                  |
 
 
-FOLLOWING IS A DETAILED DESCRIPTION ABOUT THE ABOVE MENTIONED METHODS ALONG WITH ENDPOINTS, DESCRIPTION
+FOLLOWING IS A DETAILED DESCRIPTION ABOUT THE ABOVE MENTIONED METHODS ALONG WITH ENDPOINTS, DESCRIPTION<br>
+<br>
+  1.You can fetch a list of students whose fee status is Paid<br>
 
-  1.You can fetch a list of students whose fee status is Paid
+  Endpoint<br>
+  /student?feeStatus=Paid<br>
+<br>
+  2.You can fetch a list of students whose fee status is Due<br>
 
-  Endpoint
-  /student?feeStatus=Paid
-
-  2.You can fetch a list of students whose fee status is Due
-
-  Endpoint
-  /student?feeStatus=Due
-
-  3.You can fetch a list of students belonging to a specific college (Available in the database)
-
-  Endpoint
-  /student?collegeName={}
-
-  4.You can fetch a list of students belonging to a specific room
-
-  Endpoint
-  /student?roomNumber=12
-
-  5.You can fetch a list of students joined on a specicfic date
-
-  Endpoint
-  /student?joiningDate=2025-07-04
+  Endpoint<br>
+  /student?feeStatus=Due<br>
+<br>
+  3.You can fetch a list of students belonging to a specific college (Available in the database)<br>
+<br>
+  Endpoint<br>
+  /student?collegeName={}<br>
+<br>
+  4.You can fetch a list of students belonging to a specific room<br>
+<br>
+  Endpoint<br>
+  /student?roomNumber=12<br>
+<br>
+  5.You can fetch a list of students joined on a specicfic date<br>
+<br>
+  Endpoint<br>
+  /student?joiningDate=2025-07-04<br>
   
 
-FOR POST METHOD OF STUDENT API, you will have to provide the following details of a student
+FOR POST METHOD OF STUDENT API, you will have to provide the following details of a student<br>
 
-  "studentId": 100,
-  "name": "Parker",
-  "contactNumber": "0987654321",
-  "roomNumber": 29,
-  "collegeName": "KPRIT",
-  "paidForMonths" : null
+  "studentId": 100,<br>
+  "name": "Parker",<br>
+  "contactNumber": "0987654321",<br>
+  "roomNumber": 29,<br>
+  "collegeName": "KPRIT",<br>
+  "paidForMonths" : null<br>
 
 
-PUT METHOD INCLUDES THE FOLLOWING REQUESTS
+PUT METHOD INCLUDES THE FOLLOWING REQUESTS<br>
 
-  1.You can update a student's contact number
+  1.You can update a student's contact number<br>
 
-  Endpoint
-  /student/studentId
-  ->Body should include the updating field 
+  Endpoint<br>
+  /student/studentId<br>
+  ->Body should include the updating field<br> 
 
-  2.You can update a student's room number
+  2.You can update a student's room number<br>
 
-  Endpoint
-  /student/studentId
-  -.Body should include the updating field
+  Endpoint<br>
+  /student/studentId<br>
+  -.Body should include the updating field<br>
 
-  3.You can update the fee status(Only when you want to change to Paid status, not supported to change to Due)
+  3.You can update the fee status(Only when you want to change to Paid status, not supported to change to Due)<br>
 
-  EndPoint
-  /student/studentId
-  ->Body includes the feeStatus = "Paid"
+  EndPoint<br>
+  /student/studentId<br>
+  ->Body includes the feeStatus = "Paid"<br>
   
-DELETE METHOD INCLUDES FOLLOWING
+DELETE METHOD INCLUDES FOLLOWING<br>
 
-  1.You can delete a student by student id
+  1.You can delete a student by student id<br>
 
-  Endpoint
-  /student/studentId
+  Endpoint<br>
+  /student/studentId<br>
 
-NOT SUPPORTED FUNCTIONALITIES
+NOT SUPPORTED FUNCTIONALITIES<br>
 
-  ->Combination of path & query parameters are not allowed
-  ->Multiple query parameters are not allowed
+  ->Combination of path & query parameters are not allowed<br>
+  ->Multiple query parameters are not allowed<br>
 
 
 # ROOM APIs
@@ -127,74 +127,75 @@ NOT SUPPORTED FUNCTIONALITIES
 
 
 
-POST METHOD OF ROOM 
+POST METHOD OF ROOM<br> 
   
-  1.You can add a new room to the database, providing required following details in the request
+  1.You can add a new room to the database, providing required following details in the request<br>
 
-  Endpoint
-  /room
-  Body: "roomNumber" : 12
-        "capacity" : 4
-        "bedsAvailable" : 4
-        "fee" : 6000
+  Endpoint<br>
+  /room<br>
+  Body: "roomNumber" : 12<br>
+        "capacity" : 4<br>
+        "bedsAvailable" : 4<br>
+        "fee" : 6000<br>
         
   
-GET METHOD INCLUDES THE FOLLOWING REQUETS
+GET METHOD INCLUDES THE FOLLOWING REQUETS<br>
 
-  1.You can fetch a list of all rooms'
-  Endpoint
-  /room
+  1.You can fetch a list of all rooms<br>
+  <br>
+  Endpoint<br>
+  /room<br>
 
-  2.You can fetch a single room details
-  Endpoint
-  /room/roomnumber
+  2.You can fetch a single room details<br>
+  Endpoint<br>
+  /room/roomnumber<br>
 
-  3.You can fetch a list of available rooms
+  3.You can fetch a list of available rooms<br>
 
-  Endpoint
-  /room?roomsAvailable=true
+  Endpoint<br>
+  /room?roomsAvailable=true<br>
 
-  4.You can fetch a list of occupied rooms
+  4.You can fetch a list of occupied rooms<br>
 
-  Endpoint
-  /room?roomsAvailable=false
+  Endpoint<br>
+  /room?roomsAvailable=false<br>
 
-  5.You can fetch a list of available rooms with specified capacity
+  5.You can fetch a list of available rooms with specified capacity<br>
 
-  Endpoint
-  /room?roomsAvailable=true&capacity=3
+  Endpoint<br>
+  /room?roomsAvailable=true&capacity=3<br>
 
 
-PUT METHOD REQUEST INCLUDES THE FOLLOWING REQUESTS
+PUT METHOD REQUEST INCLUDES THE FOLLOWING REQUESTS<br>
 
-  1.You can update fee of room
+  1.You can update fee of room<br>
   
-  Endpoint
-  /room/room number
-  body: "fee" : 7000
+  Endpoint<br>
+  /room/room number<br>
+  body: "fee" : 7000<br>
 
-  2.You can update the capacity of a room
+  2.You can update the capacity of a room<br>
 
-  Endpoint
-  /room/room number
+  Endpoint<br>
+  /room/room number<br>
 
-  Request body should include two necessary fields.They are
-  1.capacity
-  2.bedsAvailable
-
-
-DELETE METHOD INCLUDES 
-
-  1.You can delete a room from the database
-
-  Endpoint
-  /room/room number.
-
-  NOT SUPPORTED REQUETS
-  ->Combinations of path & query parameters are not allowed
+  Request body should include two necessary fields.They are<br>
+  1.capacity<br>
+  2.bedsAvailable<br>
 
 
-PAYMENT APIs
+DELETE METHOD INCLUDES<br> 
+
+  1.You can delete a room from the database<br>
+
+  Endpoint<br>
+  /room/room number.<br>
+
+  NOT SUPPORTED REQUETS<br>
+  ->Combinations of path & query parameters are not allowed<br>
+
+
+PAYMENT APIs<br>
 
 | Method | Endpoint               | Description                           |
 |--------|------------------------|---------------------------------------|
@@ -203,21 +204,22 @@ PAYMENT APIs
 
 
 
-  ->This entity currently supports only GET method request.
+  ->This entity currently supports only GET method request.<br>
 
-  ->You can fetch a list of all students payment records
+  ->You can fetch a list of all students payment records<br>
 
-  Endpoint
-  /payment
+  Endpoint<br>
+  /payment<br>
 
-  ->You can fetch a list of payment records of a particular student
+  ->You can fetch a list of payment records of a particular student<br>
   
-  Endpoint
-  /payment/studentId
+  Endpoint<br>
+  /payment/studentId<br>
 
 
-# HOW TO USE 
+# STEPS TO RUN THE PROJECT 
   
-1.Clone the repository.
-2.Run the application using Java.Replace the database credentials with your credentials for localhost system
-3.Use Postman or any API client to hit the above endpoints.                                                                                   
+1.Clone the repository.<br>
+2.Replace the database credentials with your credentials for localhost system.<br>
+2.Run the application using your IDE.<br>
+3.Use Postman or any API client to hit the above endpoints.<br>                                                                                   
