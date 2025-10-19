@@ -23,9 +23,9 @@ As an administrator, you can:<br>
 ->Student<br>
 ->Room<br>
 ->Payment<br>
-<br>
-STUDENT APIs
-<br>
+
+# STUDENT APIs
+
 | Method | Endpoint                                 | Description                                       |
 |--------|------------------------------------------|---------------------------------------------------|
 | GET    | `/student`                               | Get all students                                  |
@@ -38,7 +38,6 @@ STUDENT APIs
 | POST   | `/student`                               | Add a new student                                 |
 | PUT    | `/student/{studentId}`                   | Update student details                            |
 | DELETE | `/student/{studentId}`                   | Remove a student                                  |
-
 
 FOLLOWING IS A DETAILED DESCRIPTION ABOUT THE ABOVE MENTIONED METHODS ALONG WITH ENDPOINTS, DESCRIPTION<br>
 <br>
